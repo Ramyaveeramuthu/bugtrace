@@ -10,6 +10,7 @@ ALLOWED_HOSTS = []
 
 
 INSTALLED_APPS = [
+    
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -24,7 +25,7 @@ INSTALLED_APPS = [
     "bugs",
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE = MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -35,6 +36,9 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
 ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
