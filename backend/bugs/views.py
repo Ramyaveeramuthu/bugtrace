@@ -6,7 +6,7 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
 
 from .models import Bug
-from .serializers import BugSerializer
+from .serializers import BugSerializer, CommentSerializer
 
 User = get_user_model()
 
@@ -96,3 +96,16 @@ class BugViewSet(viewsets.ModelViewSet):
         bug.status = new_status
         bug.save()
         return Response(BugSerializer(bug).data)
+
+    @action(detail=True, methods=["get", "post"])
+    def comments(self, request, pk=None):
+        bug = self.get_object()
+
+        if request.method == "GET":
+            serializer = CommentSerializer(bug.comments.all(), many=True)
+            return Response(serializer.data)
+
+        serializer = CommentSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(bug=bug, author=request.user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

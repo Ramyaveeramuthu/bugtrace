@@ -45,3 +45,21 @@ class Bug(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Comment(models.Model):
+    bug = models.ForeignKey(Bug, on_delete=models.CASCADE, related_name="comments")
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="bug_comments",
+    )
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["created_at"]
+
+    def __str__(self):
+        return f"Comment by {self.author} on {self.bug}"

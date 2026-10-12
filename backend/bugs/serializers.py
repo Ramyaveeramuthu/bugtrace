@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from users.serializers import UserSerializer
-from .models import Bug
+from .models import Bug, Comment
 
 
 class BugSerializer(serializers.ModelSerializer):
@@ -24,3 +24,12 @@ class BugSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
         read_only_fields = ["status", "created_at", "updated_at"]
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    author = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ["id", "bug", "author", "text", "created_at"]
+        read_only_fields = ["bug", "created_at"]
