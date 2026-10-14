@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Login from "./Login";
+import BugList from "./BugList";
 import { isLoggedIn, logout } from "./api/client";
 
 export default function App() {
@@ -15,10 +16,12 @@ export default function App() {
   }
 
   return (
-    <div style={{ maxWidth: 600, margin: "80px auto", textAlign: "left" }}>
-      <h1>BugTrace</h1>
-      <p>Login success! 🎉</p>
-      <button onClick={handleLogout}>Logout</button>
+    <div style={{ maxWidth: 800, margin: "40px auto", textAlign: "left" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h1>BugTrace</h1>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
+      <BugList />
     </div>
   );
 }

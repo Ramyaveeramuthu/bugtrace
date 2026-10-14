@@ -23,3 +23,14 @@ export function logout() {
 export function isLoggedIn() {
   return !!localStorage.getItem("access");
 }
+
+export async function getBugs() {
+  const token = localStorage.getItem("access");
+  const res = await fetch(`${API_URL}/bugs/`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) {
+    throw new Error("Could not load bugs");
+  }
+  return res.json();
+}
