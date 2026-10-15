@@ -1,10 +1,24 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Login from "./Login";
 import BugList from "./BugList";
-import { isLoggedIn, logout } from "./api/client";
+import BugForm from "./BugForm";
+import { isLoggedIn, logout, getBugs } from "./api/client";
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(isLoggedIn());
+  const [bugs, setBugs] = useState([]);
+  const [error, setError] = useState("");
+
+  const loadBugs = useCallback(() => {
+    setError("");
+    getBugs()
+      .then((data) => setBugs(data.results || data))
+      .catch((err) => setError(err.message));
+  }, []);
+
+  useEffect(() => {
+    if (loggedIn) loadBugs();
+  }, [loggedIn, loadBugs]);
 
   function handleLogout() {
     logout();
@@ -21,7 +35,8 @@ export default function App() {
         <h1>BugTrace</h1>
         <button onClick={handleLogout}>Logout</button>
       </div>
-      <BugList />
+      <BugForm onCreated={loadBugs} />
+      <BugList bugs={bugs} error={error} />
     </div>
   );
 }

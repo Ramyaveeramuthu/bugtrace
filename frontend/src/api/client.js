@@ -34,3 +34,19 @@ export async function getBugs() {
   }
   return res.json();
 }
+
+export async function createBug(bug) {
+  const token = localStorage.getItem("access");
+  const res = await fetch(`${API_URL}/bugs/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(bug),
+  });
+  if (!res.ok) {
+    throw new Error("Could not create bug");
+  }
+  return res.json();
+}
